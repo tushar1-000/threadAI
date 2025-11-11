@@ -1,0 +1,101 @@
+import {
+  signupSchema,
+  signinSchema,
+} from "../validations/userVallidation.js";
+import User from "../models/UserModle.js";
+import bcrypt from "bcryptjs";
+export async function signupUser(req, res) {
+  try {
+    const parsed = signupSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+      const errors = parsed.error.issues.map((err) => ({
+        field: err.path[0],
+        message: err.message,
+      }));
+
+      return res.status(400).json({
+        success: false,
+        errors,
+      });
+    }
+
+    const { name, email, password } = parsed.data;
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists",
+      });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "User created successfully",
+      user: {
+        _id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+}
+
+export async function signinUser(req, res) {
+  try {
+    const parsed = signinSchema.safeParse(req.body);
+
+    if (!parsed.success) {
+      const errors = parsed.error.issues.map((err) => ({
+        field: err.path[0],
+        message: err.message,
+      }));
+
+      return res.status(400).json({
+        success: false,
+        errors,
+      });
+    }
+
+    const {  email, password } = parsed.data;
+    const user = await User.findOne({ email });
+
+     if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: " Signin successfully",
+      user: {
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+}
