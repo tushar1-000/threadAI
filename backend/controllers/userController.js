@@ -2,8 +2,8 @@ import { signupSchema, signinSchema } from "../validations/userVallidation.js";
 import User from "../models/UserModle.js";
 import bcrypt from "bcryptjs";
 import { generateAccessToken } from "../utils/tokenUtils.js";
-export async function signupUser(req, res) {
-  try {
+export async function signupUser(req, res,next) {
+
     const parsed = signupSchema.safeParse(req.body);
 
     if (!parsed.success) {
@@ -22,7 +22,7 @@ export async function signupUser(req, res) {
 
     const user = await User.findOne({ email });
 
-
+    
     if (user) {
       return res.status(400).json({
         success: false,
@@ -54,14 +54,11 @@ export async function signupUser(req, res) {
         email: newUser.email,
       },
     });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
+    next(err);
 }
 
-export async function signinUser(req, res) {
-  try {
+export async function signinUser(req, res,next) {
+
     const parsed = signinSchema.safeParse(req.body);
 
     if (!parsed.success) {
@@ -107,10 +104,7 @@ export async function signinUser(req, res) {
         email: user.email,
       },
     });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ success: false, message: "Server error" });
-  }
+    next(err)
 }
 
 
@@ -124,5 +118,4 @@ export async function logoutUser(req, res) {
         success: true,
         message: "Logout successfully",
     });
-    
 }
