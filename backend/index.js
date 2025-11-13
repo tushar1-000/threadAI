@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cookieParser from "cookie-parser";
 import connectDb from './config/db.js';
 import userRouter from './routes/userRoute.js';
+import postRouter from './routes/postRoute.js';
 import { errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
@@ -17,6 +18,8 @@ app.use(express.urlencoded({extended: true}))
 
 app.use(cookieParser());
 app.use('/api/user', userRouter)
+app.use('/api/post', postRouter)
+
 app.use(errorHandler);
 
 

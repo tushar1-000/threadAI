@@ -1,10 +1,10 @@
 import jwt  from "jsonwebtoken";
-import User from "../models/UserModle.js";
+import User from "../models/UserModel.js";
 
 const protect = async function (req, res, next) {
   try {
     const token = req.cookies.accessToken;
-    console.log(token);
+
     
     if (!token) {
       return res.status(401).json({

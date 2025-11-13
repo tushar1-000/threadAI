@@ -1,8 +1,8 @@
 import { signupSchema, signinSchema } from "../validations/userVallidation.js";
-import User from "../models/UserModle.js";
+import User from "../models/UserModel.js";
 import bcrypt from "bcryptjs";
 import { generateAccessToken } from "../utils/tokenUtils.js";
-export async function signupUser(req, res,next) {
+export async function signupUser(req, res) {
 
     const parsed = signupSchema.safeParse(req.body);
 
@@ -54,10 +54,10 @@ export async function signupUser(req, res,next) {
         email: newUser.email,
       },
     });
-    next(err);
+
 }
 
-export async function signinUser(req, res,next) {
+export async function signinUser(req, res) {
 
     const parsed = signinSchema.safeParse(req.body);
 
@@ -104,7 +104,7 @@ export async function signinUser(req, res,next) {
         email: user.email,
       },
     });
-    next(err)
+    
 }
 
 
