@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { string, trim } from "zod";
 const postSchema =  mongoose.Schema({
     title:{
         type:String,
