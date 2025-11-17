@@ -24,10 +24,17 @@ export async function createPost(req, res, next) {
   res.status(201).json({ success: true, post });
 }
 
-export async function getAllPosts(req, res) {
-  const posts = await Post.find();
-  res.status(200).json({ success: true, posts });
-}
+
+export async function getPaginatedPosts(req,res){
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+    const posts =  await Post.find().
+    sort({createdAt:-1})
+    .skip( (page -1 ) * limit  )
+    .limit(limit);
+    return res.status(200).json({ success: true, posts });
+  }
+  
 
 export async function getPostById(req, res) {
   const postId = req.params.postId;
