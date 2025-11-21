@@ -1,14 +1,20 @@
+import { authApi } from '@/api/authApi';
+import { useApi } from '@/hooks/useApi';
 import { Mail, Lock } from 'lucide-react'
 import React, { useState } from 'react'
 
 export default function SignIn() {
+ const { loading, error, request } = useApi(authApi.signIn);
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log('form submitted');
+  async function handleSubmit(e) {
+   e.preventDefault();
+    const data = await request({ email, password });
+    if (data) {
+      console.log("User logged in:", data);
+    }
   }
 
   return (
