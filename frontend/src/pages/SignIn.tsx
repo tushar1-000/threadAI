@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import type { SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import {signinSchema} from '@/schema/signin.schema'
-
+import { useNavigate } from 'react-router';
 
 type Inputs = {
   email: string
@@ -16,6 +16,7 @@ type Inputs = {
 
 export default function SignIn() {
   const { loading, error, request } = useApi(authApi.signIn);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -23,10 +24,11 @@ export default function SignIn() {
     formState: { errors },
   } = useForm<Inputs>({resolver: yupResolver(signinSchema)})
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await request(data);
-    if (response) {
-        console.log("User logged in:", response);
-    }
+    navigate("/");
+    // const response = await request(data);
+    // if (response) {
+    //     console.log("User logged in:", response);
+    // }
   }
 
  
