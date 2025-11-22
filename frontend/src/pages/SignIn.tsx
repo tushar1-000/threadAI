@@ -24,11 +24,10 @@ export default function SignIn() {
     formState: { errors },
   } = useForm<Inputs>({resolver: yupResolver(signinSchema)})
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    navigate("/");
-    // const response = await request(data);
-    // if (response) {
-    //     console.log("User logged in:", response);
-    // }
+      const response = await request(data);
+      if (response) {
+          navigate("/");
+    }
   }
 
  
