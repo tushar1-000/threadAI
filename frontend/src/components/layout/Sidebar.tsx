@@ -9,9 +9,11 @@ import {
   Sparkles
 } from 'lucide-react'
 import EditProfileModal from '../profile/EditProfileModal'
+import CreatePostModal from '../feed/CreatePostModal'
 
 export default function Sidebar() {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false)
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
 
   const navItems = [
     { icon: HomeIcon, label: 'Home', active: true },
@@ -52,7 +54,10 @@ export default function Sidebar() {
 
           {/* Post Button */}
           <div className="px-2">
-            <button className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary-600 to-primary-500 text-white font-bold text-lg hover:from-primary-700 hover:to-primary-600 transition-all shadow-lg shadow-primary-500/30 hover:shadow-primary-500/40 active:scale-[0.98] transform group relative overflow-hidden">
+            <button 
+              onClick={() => setIsCreatePostOpen(true)}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-primary-600 to-primary-500 text-white font-bold text-lg hover:from-primary-700 hover:to-primary-600 transition-all shadow-lg shadow-primary-500/30 hover:shadow-primary-500/40 active:scale-[0.98] transform group relative overflow-hidden"
+            >
               <span className="relative z-10">Post</span>
               <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
             </button>
@@ -87,6 +92,11 @@ export default function Sidebar() {
       <EditProfileModal 
         isOpen={isEditProfileOpen} 
         onClose={() => setIsEditProfileOpen(false)} 
+      />
+      
+      <CreatePostModal
+        isOpen={isCreatePostOpen}
+        onClose={() => setIsCreatePostOpen(false)}
       />
     </>
   )
