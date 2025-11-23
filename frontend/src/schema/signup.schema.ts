@@ -11,3 +11,7 @@ export const signupSchema = yup.object({
     .required("Confirm password is required")
     .oneOf([yup.ref("password")], "Password doesn't match"),
 });
+
+
+
+export type SignUpInput = yup.InferType<typeof signupSchema>;

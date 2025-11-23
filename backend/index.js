@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cookieParser from "cookie-parser";
 import connectDb from './config/db.js';
-import userRouter from './routes/userRoute.js';
+import authRouter from './routes/authRoute.js';
 import postRouter from './routes/postRoute.js';
 import { errorHandler } from "./middleware/errorMiddleware.js";
 import commentRouter from "./routes/commentRoute.js"
@@ -23,7 +23,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.use(cookieParser());
-app.use('/api/user', userRouter)
+app.use('/api/auth', authRouter)
 app.use('/api/post', postRouter)
 app.use('/api',commentRouter)
 

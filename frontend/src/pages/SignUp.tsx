@@ -27,7 +27,6 @@ export default function SignUp() {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const response = await request(data);
-    
           if (response) {
           navigate("/");
     }

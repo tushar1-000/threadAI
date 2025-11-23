@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {  useState } from 'react'
 import { 
   Home as HomeIcon, 
   Search, 
@@ -6,17 +6,22 @@ import {
   Mail, 
   User, 
   MoreHorizontal, 
-  Sparkles
+  Sparkles,
+  LogOut
 } from 'lucide-react'
 import EditProfileModal from '../profile/EditProfileModal'
 import CreatePostModal from '../feed/CreatePostModal'
+import { useAuthStore } from '@/store/authStore'
 
 export default function Sidebar() {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false)
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
+  const user = useAuthStore((state) => state.user);
+console.log("USER FROM STORE:", user);
 
   const navItems = [
     { icon: HomeIcon, label: 'Home', active: true },
+    {icon :LogOut, label:'Logout' }
     // { icon: Search, label: 'Explore' },
     // { icon: Bell, label: 'Notifications' },
     // { icon: Mail, label: 'Messages' },
