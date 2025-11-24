@@ -1,5 +1,3 @@
-import { authApi } from '@/api/authApi';
-import { useApi } from '@/hooks/useApi';
 import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router'
 import { useForm } from "react-hook-form"
@@ -7,6 +5,7 @@ import type { SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { signupSchema } from '@/schema/signup.schema'
 import { useNavigate } from 'react-router';
+import { useAuthStore } from '@/store/authStore';
 
 type Inputs = {
   name: string
@@ -16,7 +15,7 @@ type Inputs = {
 }
 
 export default function SignUp() {
-  const { loading, error, request } = useApi(authApi.signUp);
+   const { signUp, loading, error } = useAuthStore();
   const navigate = useNavigate()
 
   const {
@@ -26,10 +25,10 @@ export default function SignUp() {
   } = useForm<Inputs>({ resolver: yupResolver(signupSchema) })
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const response = await request(data);
-          if (response) {
+      const response = await signUp(data);
+      if (response) {
           navigate("/");
-    }
+      }
   }
 
   return (

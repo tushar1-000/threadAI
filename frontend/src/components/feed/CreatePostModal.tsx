@@ -23,13 +23,6 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
           </button>
           <div className="font-semibold text-primary-600">Drafts</div>
         </div>
-
-        {/* We reuse the CreatePost component but remove its default border/padding to fit modal better 
-            In a real app, CreatePost might accept props to toggle styling, 
-            but here we wrapper it or can adjust it. 
-            Since CreatePost has padding/border built-in, we'll just render it.
-            The border-b in CreatePost might look redundant, but it's okay for now or we can styling override.
-        */}
         <div className="[&>div]:border-none [&>div]:bg-transparent">
           <CreatePost />
         </div>

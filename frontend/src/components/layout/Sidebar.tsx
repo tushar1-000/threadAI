@@ -1,9 +1,9 @@
 import React, {  useState } from 'react'
 import { 
   Home as HomeIcon, 
-  Search, 
-  Bell, 
-  Mail, 
+  // Search, 
+  // Bell, 
+  // Mail, 
   User, 
   MoreHorizontal, 
   Sparkles,

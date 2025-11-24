@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { authApi } from "@/api/authApi.ts";
 
 interface User {
-  id: string;
   email: string;
   name: string;
 }
@@ -13,6 +12,7 @@ interface AuthState {
   error: string;
   fetchUser: () => Promise<void>;
   signIn: (credentials: { email: string; password: string }) => Promise<boolean>;
+  signUp:(credentials: { email: string; password: string  , name:string , confirmPassword:string}) => Promise<boolean>;
   signOut: () => Promise<void>;
 }
 
@@ -26,9 +26,11 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true, error: "" });
     try {
       const res = await authApi.me();
-      set({ user: res.data.user, loading: false });
-    } catch (err) {
+      if("user" in res.data)
+        set({ user: res.data.user, loading: false });
+    } catch (err:unknown) {
       set({ user: null, loading: false });
+      console.log(err)
     }
   },
 
@@ -56,7 +58,28 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ loading: true });
     try {
       await authApi.signOut();
-    } catch {}
-    set({ user: null, loading: false });
+      set({ user: null, loading: false });
+    } catch(err) {
+        console.log(err)
+    }
   },
+    // SignIn
+  signUp: async (credentials) => {
+    set({ loading: true, error: "" });
+    try {
+      const res = await authApi.signUp(credentials);
+      set({
+        user: res.data.user,
+        loading: false,
+      });
+      return true; // matching Promise<boolean>
+    } catch (err) {
+      set({
+        error: err?.response?.data?.message || "Invalid credentials",
+        loading: false,
+      });
+      return false;
+    }
+  },
+
 }));

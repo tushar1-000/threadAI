@@ -15,9 +15,8 @@ export async function createPost(req, res, next) {
       errors,
     });
   }
-  const { title, content } = parsed.data;
+  const {  content } = parsed.data;
   const post = await Post.create({
-    title,
     content,
     user: req.user._id,
   });
@@ -59,7 +58,7 @@ export async function updatePost(req, res) {
       errors,
     });
   }
-  const { title, content } = parsed.data;
+  const {  content } = parsed.data;
 
   const post = await Post.findById(req.params.postId);
   if (!post) {
@@ -69,7 +68,7 @@ export async function updatePost(req, res) {
   if (!post.user.equals(req.user._id)) {
     return res.status(401).json({ success: false, message: "Unauthorized" });
   }
-  post.title = title;
+  
   post.content = content;
   await post.save();
   res.status(200).json({ success: true, post });
