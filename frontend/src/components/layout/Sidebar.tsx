@@ -12,16 +12,21 @@ import {
 import EditProfileModal from '../profile/EditProfileModal'
 import CreatePostModal from '../feed/CreatePostModal'
 import { useAuthStore } from '@/store/authStore'
+import { NavLink, useNavigate } from 'react-router'
+
 
 export default function Sidebar() {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false)
   const [isCreatePostOpen, setIsCreatePostOpen] = useState(false)
   const user = useAuthStore((state) => state.user);
-console.log("USER FROM STORE:", user);
+  const signOut = useAuthStore(state=>state.signOut)
+  const navigate = useNavigate();
 
   const navItems = [
-    { icon: HomeIcon, label: 'Home', active: true },
-    {icon :LogOut, label:'Logout' }
+    // { icon: HomeIcon, label: 'Home', active: true },
+    // {icon :LogOut, label:'Logout' }
+     { icon: HomeIcon, label: "Home", path: "/", active: true },
+  user ? { icon: LogOut, label: "Logout" , path:'/auth/logout' }: { icon: User, label: "Sign In" , path:'/auth/signin' },
     // { icon: Search, label: 'Explore' },
     // { icon: Bell, label: 'Notifications' },
     // { icon: Mail, label: 'Messages' },
@@ -42,19 +47,37 @@ console.log("USER FROM STORE:", user);
 
           {/* Nav Items */}
           <nav className="space-y-2 px-2">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                className={`flex items-center space-x-4 px-4 py-3.5 w-full rounded-2xl transition-all duration-200 group ${
-                  item.active 
-                    ? 'bg-white text-primary-600 shadow-sm ring-1 ring-gray-100 font-semibold' 
-                    : 'text-gray-600 hover:bg-white hover:text-gray-900 hover:shadow-sm hover:ring-1 hover:ring-gray-50'
-                }`}
-              >
-                <item.icon className={`w-6 h-6 transition-colors ${item.active ? 'fill-current' : 'group-hover:text-primary-500'}`} />
-                <span className="text-lg">{item.label}</span>
-              </button>
-            ))}
+{navItems.map(item => (
+  item.label === "Logout" ? (
+    <button
+      key={item.label}
+      onClick={async () => {
+        await signOut();
+        navigate("/auth/signin");
+      }}
+      className="flex items-center space-x-4 px-4 py-3.5 w-full rounded-2xl text-gray-600 hover:bg-white hover:text-gray-900 hover:shadow-sm hover:ring-1 hover:ring-gray-50"
+    >
+      <item.icon className="w-6 h-6" />
+      <span className="text-lg">{item.label}</span>
+    </button>
+  ) : (
+    <NavLink
+      key={item.label}
+      to={item.path}
+      className={({ isActive }) =>
+        `flex items-center space-x-4 px-4 py-3.5 w-full rounded-2xl transition-all duration-200 group ${
+          isActive
+            ? 'bg-white text-primary-600 shadow-sm ring-1 ring-gray-100 font-semibold'
+            : 'text-gray-600 hover:bg-white hover:text-gray-900 hover:shadow-sm hover:ring-1 hover:ring-gray-50'
+        }`
+      }
+    >
+      <item.icon className="w-6 h-6" />
+      <span className="text-lg">{item.label}</span>
+    </NavLink>
+  )
+))}
+
           </nav>
 
           {/* Post Button */}
