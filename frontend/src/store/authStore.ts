@@ -1,9 +1,15 @@
 import { create } from "zustand";
 import { authApi } from "@/api/authApi.ts";
+import type { AxiosError } from "axios";
 
 interface User {
   email: string;
   name: string;
+}
+
+interface ApiErrorResponse {
+   success: boolean;
+  message?: string;
 }
 
 interface AuthState {
@@ -44,9 +50,11 @@ export const useAuthStore = create<AuthState>((set) => ({
         loading: false,
       });
       return true; // matching Promise<boolean>
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as AxiosError<ApiErrorResponse>;
+
       set({
-        error: err?.response?.data?.message || "Invalid credentials",
+        error: error?.response?.data?.message || "Invalid credentials",
         loading: false,
       });
       return false;
@@ -72,10 +80,11 @@ export const useAuthStore = create<AuthState>((set) => ({
         user: res.data.user,
         loading: false,
       });
-      return true; // matching Promise<boolean>
-    } catch (err: any) {
+      return true; 
+    } catch (err: unknown ) {
+      const error = err as AxiosError<ApiErrorResponse>;
       set({
-        error: err?.response?.data?.message || "Invalid credentials",
+        error: error?.response?.data?.message || "Invalid credentials",
         loading: false,
       });
       return false;

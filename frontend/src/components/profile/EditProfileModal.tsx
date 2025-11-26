@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+
 import { X, Camera, MapPin, User as UserIcon, Image as ImageIcon } from 'lucide-react'
+import { useAuthStore } from '@/store/authStore';
 
 interface EditProfileModalProps {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface EditProfileModalProps {
 }
 
 export default function EditProfileModal({ isOpen, onClose }: EditProfileModalProps) {
+  const user = useAuthStore(auth=>auth.user)
   if (!isOpen) return null;
 
   return (
@@ -60,7 +62,7 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
                  </div>
                  <input 
                    type="text" 
-                   defaultValue="John Doe"
+                   defaultValue={user?.name}
                    className="block w-full pl-11 pr-4 py-3 bg-gray-50 border border-transparent rounded-xl text-gray-900 placeholder-gray-400 focus:bg-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all outline-none font-medium"
                  />
               </div>

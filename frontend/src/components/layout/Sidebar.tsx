@@ -109,8 +109,8 @@ export default function Sidebar() {
             </div>
             
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-gray-900 truncate group-hover:text-primary-600 transition-colors">John Doe</p>
-              <p className="text-xs text-gray-500 truncate">@johndoe</p>
+              <p className="text-sm font-bold text-gray-900 truncate group-hover:text-primary-600 transition-colors">{user?.name}</p>
+              
             </div>
             <MoreHorizontal className="w-5 h-5 text-gray-400 group-hover:text-primary-500 transition-colors" />
           </button>

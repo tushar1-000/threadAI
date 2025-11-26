@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import { 
   MoreHorizontal, 
   MessageSquare,
@@ -10,16 +10,17 @@ import {
 interface PostProps {
   user: {
     name: string;
-    handle: string;
-    avatar: string;
+    // handle: string;
+    // avatar: string;
   };
   content: string;
   image?: string;
   time: string;
   stats: {
-    comments: string | number;
-    reposts: string | number;
-    likes: string | number;
+    comments:  number;
+    reposts:  number;
+    likes:   number;
+    dislikes:  number
   };
 }
 

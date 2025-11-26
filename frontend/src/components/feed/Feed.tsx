@@ -1,9 +1,35 @@
-import React from 'react'
 import { Sparkles } from 'lucide-react'
 import CreatePost from './CreatePost'
 import PostCard from './PostCard'
+import { getPostApi } from '@/api/postApi'
+import { useApi } from '@/hooks/useApi'
+import { useEffect, useState } from 'react'
+
+interface Post{
+  _id: string,
+  content:string,
+  likes: string[],
+  dislikes: string[],
+  repostOf: string[],
+  user: {name:string},
+  commentCount: number
+}
 
 export default function Feed() {
+  const {loading, error, request} =  useApi(getPostApi);
+  const [posts,setPosts] =  useState<Post[]>([])
+
+  useEffect( ()=>{
+      const fetchPosts =  async()=>{
+          const response = await request({page:1,limit:10});
+          if(response && response.posts){
+            console.log(response.posts)
+            setPosts(response.posts)
+          }
+      }
+      fetchPosts();
+  } , [])
+
   return (
     <div className="flex-1 max-w-2xl w-full bg-white min-h-screen border-x border-gray-100">
       {/* Header */}
@@ -17,54 +43,26 @@ export default function Feed() {
 
       {/* Feed Items */}
       <div className="divide-y divide-gray-100 pb-20">
-        {/* Post 1 */}
-        <PostCard 
+
+        {posts.map((post)=>{
+          return (
+             <PostCard 
+             key={post._id}
           user={{
-            name: "Jane Smith",
-            handle: "@janesmith",
-            avatar: "Jane"
+            name:  post.user.name
           }}
-          time="2h"
-          content="Just finished a great book on design systems. Highly recommend it to anyone in the field! It's amazing how a well-structured system can streamline the entire product development process. #design #uiux"
+          time="8h"
+          content= {post.content}
           stats={{
-            comments: 12,
-            reposts: 4,
-            likes: 88
+            comments: post?.commentCount,
+            reposts: post?.repostOf?.length,
+            likes: post?.likes?.length,
+            dislikes: post?.dislikes?.length
           }}
         />
 
-        {/* Post 2 */}
-        <PostCard 
-          user={{
-            name: "Tech Weekly",
-            handle: "@techweekly",
-            avatar: "Tech"
-          }}
-          time="5h"
-          content="Exciting news from the world of AI! A new model was just released that can generate photorealistic images from simple text prompts. The future is now."
-          image="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2832&auto=format&fit=crop"
-          stats={{
-            comments: 152,
-            reposts: 98,
-            likes: "1.2k"
-          }}
-        />
-        
-        {/* Post 3 */}
-         <PostCard 
-          user={{
-            name: "Alex Johnson",
-            handle: "@alexj",
-            avatar: "Alex"
-          }}
-          time="8h"
-          content="Trying out the new ThreadAI features. The UI is looking pretty clean! 🔥 what do you all think?"
-          stats={{
-            comments: 42,
-            reposts: 12,
-            likes: 340
-          }}
-        />
+          )
+        })}
       </div>
     </div>
   )

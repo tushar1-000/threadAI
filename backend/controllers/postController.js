@@ -28,8 +28,9 @@ export async function getPaginatedPosts(req,res){
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   
-    const posts =  await Post.find().
-    sort({createdAt:-1})
+    const posts =  await Post.find()
+    .populate('user' , 'name email')
+    .sort({createdAt:-1})
     .skip( (page -1 ) * limit  )
     .limit(limit);
     return res.status(200).json({ success: true, posts });

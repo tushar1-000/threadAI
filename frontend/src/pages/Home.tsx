@@ -1,6 +1,5 @@
-import React from 'react'
 import Sidebar from '@/components/layout/Sidebar'
-import RightSidebar from '@/components/layout/RightSidebar'
+// import RightSidebar from '@/components/layout/RightSidebar'
 import Feed from '@/components/feed/Feed'
 
 export default function Home() {
