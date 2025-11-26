@@ -73,7 +73,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         loading: false,
       });
       return true; // matching Promise<boolean>
-    } catch (err) {
+    } catch (err: any) {
       set({
         error: err?.response?.data?.message || "Invalid credentials",
         loading: false,

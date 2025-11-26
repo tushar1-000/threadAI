@@ -19,7 +19,7 @@ export default function CreatePost() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isValid }
+    formState: { errors }
   } = useForm<PostInput>({
     resolver: yupResolver(postSchema),
     mode: "onChange",
