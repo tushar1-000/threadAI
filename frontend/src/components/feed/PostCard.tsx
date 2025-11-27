@@ -24,13 +24,16 @@ interface PostProps {
   };
 }
 
+
+
 export default function PostCard({ user, content, image, time, stats }: PostProps) {
+  console.log(time)
   return (
     <div className="p-4 border-b border-gray-100 hover:bg-gray-50/50 transition-colors cursor-pointer bg-white">
       <div className="flex space-x-4">
         {/* Avatar */}
         <div className="w-11 h-11 rounded-full bg-gray-200 shrink-0 overflow-hidden ring-2 ring-transparent hover:ring-primary-100 transition-all">
-           <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.avatar}`} alt={user.name} className="w-full h-full object-cover" />
+           {/* <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.avatar}`} alt={user.name} className="w-full h-full object-cover" /> */}
         </div>
         
         <div className="flex-1 min-w-0">
@@ -38,7 +41,7 @@ export default function PostCard({ user, content, image, time, stats }: PostProp
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 text-sm overflow-hidden">
               <span className="font-bold text-gray-900 hover:underline truncate">{user.name}</span>
-              <span className="text-gray-500 truncate">{user.handle}</span>
+              {/* <span className="text-gray-500 truncate">{user.handle}</span> */}
               <span className="text-gray-400">·</span>
               <span className="text-gray-500 hover:underline whitespace-nowrap">{time}</span>
             </div>

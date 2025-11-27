@@ -39,7 +39,7 @@ export async function signupUser(req, res) {
   res.cookie("accessToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production", // only send over HTTPS
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV=== "production" ? "none" : "lax",
     maxAge: 24 * 60 * 60 * 1000,
   });
 
@@ -89,7 +89,7 @@ export async function signinUser(req, res) {
   res.cookie("accessToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV=== "production" ? "none" : "lax",
     maxAge: 24 * 60 * 60 * 1000,
   });
   res.status(200).json({
@@ -106,7 +106,7 @@ export async function logoutUser(req, res) {
   res.clearCookie("accessToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: process.env.NODE_ENV=== "production" ? "none" : "lax",
   });
   res.status(200).json({
     success: true,

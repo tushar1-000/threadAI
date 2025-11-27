@@ -4,6 +4,7 @@ import PostCard from './PostCard'
 import { getPostApi } from '@/api/postApi'
 import { useApi } from '@/hooks/useApi'
 import { useEffect, useState } from 'react'
+import { timeAgo } from '@/lib/utils';
 
 interface Post{
   _id: string,
@@ -12,11 +13,12 @@ interface Post{
   dislikes: string[],
   repostOf: string[],
   user: {name:string},
-  commentCount: number
+  commentCount: number,
+  createdAt: string
 }
 
 export default function Feed() {
-  const {loading, error, request} =  useApi(getPostApi);
+  const { request} =  useApi(getPostApi);
   const [posts,setPosts] =  useState<Post[]>([])
 
   useEffect( ()=>{
@@ -45,13 +47,15 @@ export default function Feed() {
       <div className="divide-y divide-gray-100 pb-20">
 
         {posts.map((post)=>{
+      
           return (
+      
              <PostCard 
              key={post._id}
           user={{
             name:  post.user.name
           }}
-          time="8h"
+          time = { timeAgo(post.createdAt || String(  5 ))}
           content= {post.content}
           stats={{
             comments: post?.commentCount,
